@@ -29,44 +29,44 @@ export const ArticleParamsForm = ({
 	articleState,
 	setArticleState,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 	const [selectArticleState, setSelectArticleState] =
 		useState<ArticleStateType>(articleState);
 	const rootRef = useRef<HTMLDivElement>(null);
 
-	const formOpenHandler = () => {
-		setIsOpen((isOpen) => !isOpen);
+	const openFormHandler = () => {
+		setIsMenuOpen((isMenuOpen) => !isMenuOpen);
 	};
 
-	const inputHandler = (key: keyof ArticleStateType, value: OptionType) => {
+	const handleInput = (key: keyof ArticleStateType, value: OptionType) => {
 		setSelectArticleState((prevState) => ({ ...prevState, [key]: value }));
 	};
 
-	const formSubmitHandler = (e: FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		setArticleState(selectArticleState);
 	};
 
-	const formResetHandler = () => {
+	const handleReset = () => {
 		setArticleState(defaultArticleState);
 		setSelectArticleState(defaultArticleState);
 	};
 
 	useOutsideClickClose({
-		isOpen,
+		isOpen: isMenuOpen,
 		rootRef,
-		onChange: setIsOpen,
+		onChange: setIsMenuOpen,
 	});
 
 	return (
 		<>
 			<div ref={rootRef}>
-				<ArrowButton isOpen={isOpen} onClick={formOpenHandler} />
+				<ArrowButton isOpen={isMenuOpen} onClick={openFormHandler} />
 				<aside
 					className={clsx(styles.container, {
-						[styles.container_open]: isOpen,
+						[styles.container_open]: isMenuOpen,
 					})}>
-					<form className={styles.form} onSubmit={formSubmitHandler}>
+					<form className={styles.form} onSubmit={handleSubmit}>
 						<Text as='h1' size={31} weight={800} uppercase dynamicLite={false}>
 							Задайте параметры
 						</Text>
@@ -75,7 +75,7 @@ export const ArticleParamsForm = ({
 							options={fontFamilyOptions}
 							title={'шрифт'}
 							onChange={(selectElement: OptionType) =>
-								inputHandler('fontFamilyOption', selectElement)
+								handleInput('fontFamilyOption', selectElement)
 							}
 						/>
 						<RadioGroup
@@ -84,7 +84,7 @@ export const ArticleParamsForm = ({
 							selected={selectArticleState.fontSizeOption}
 							title={'размер шрифта'}
 							onChange={(selectElement: OptionType) =>
-								inputHandler('fontSizeOption', selectElement)
+								handleInput('fontSizeOption', selectElement)
 							}
 						/>
 						<Select
@@ -92,7 +92,7 @@ export const ArticleParamsForm = ({
 							options={fontColors}
 							title={'цвет шрифта'}
 							onChange={(selectElement: OptionType) =>
-								inputHandler('fontColor', selectElement)
+								handleInput('fontColor', selectElement)
 							}
 						/>
 						<Separator />
@@ -101,7 +101,7 @@ export const ArticleParamsForm = ({
 							options={backgroundColors}
 							title={'цвет фона'}
 							onChange={(selectElement: OptionType) =>
-								inputHandler('backgroundColor', selectElement)
+								handleInput('backgroundColor', selectElement)
 							}
 						/>
 						<Select
@@ -109,7 +109,7 @@ export const ArticleParamsForm = ({
 							options={contentWidthArr}
 							title={'ширина контента'}
 							onChange={(selectElement: OptionType) =>
-								inputHandler('contentWidth', selectElement)
+								handleInput('contentWidth', selectElement)
 							}
 						/>
 						<div className={styles.bottomContainer}>
@@ -117,7 +117,7 @@ export const ArticleParamsForm = ({
 								title='Сбросить'
 								htmlType='reset'
 								type='clear'
-								onClick={formResetHandler}
+								onClick={handleReset}
 							/>
 							<Button title='Применить' htmlType='submit' type='apply' />
 						</div>
