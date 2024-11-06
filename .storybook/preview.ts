@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react';
 import { StoryDecorator } from '../src/ui/story-decorator/StoryDecorator';
+import '../src/styles/index.scss';
 
 const preview: Preview = {
 	parameters: {
